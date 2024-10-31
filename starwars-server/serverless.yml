@@ -1,0 +1,25 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: loomystudios
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: starwars-server
+# "services" is the name of this project. This will also be added to your AWS resource names.
+service: starwars-server
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+
+functions:
+  star-wars:
+    handler: handler.getStarWarsPeople
+    events:
+      - httpApi:
+          path: /
+          method: get
+#  hello:
+#    handler: handler.getStarWarsPeople
+#    events:
+#      - httpApi:
+#          path: /
+#          method: get
