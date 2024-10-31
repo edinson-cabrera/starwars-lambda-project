@@ -1,0 +1,56 @@
+# serverless.yml
+org: loomystudios
+app: starwars-server
+service: starwars-internal-crud
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:975050061581:table/people"
+
+
+functions:
+  hello:
+    handler: src/main.getListPeople
+    events:
+      - httpApi:
+          path: /list
+          method: GET
+  
+  create:
+    handler: src/main.createPerson
+    events:
+      - httpApi:
+          path: /create
+          method: POST
+
+
+build:
+  esbuild:
+    # Enable or Disable bundling the function code and dependencies. (Default: true)
+    bundle: true
+    # Enable minifying function code. (Default: false)
+    minify: false
+    # NPM packages to not be bundled. Glob patterns are supported here.
+    external:
+      - 'class-transformer'
+      - 'class-validator'
+      - '@nestjs/microservices/microservices-module'
+      - '@nestjs/microservices'
+      - '@nestjs/websockets/socket-module'
+      - '@fastify/static'
+      - '@fastify/view'
+    # NPM packages to not be bundled, as well as not included in node_modules
+    # in the zip file uploaded to Lambda. By default this will be set to aws-sdk
+    # if the runtime is set to nodejs16.x or lower or set to @aws-sdk/* if set to nodejs18.x or higher.
+    # Glob patterns are supported here.
