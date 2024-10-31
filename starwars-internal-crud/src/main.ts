@@ -1,5 +1,5 @@
 import { NestFactory } from "@nestjs/core";
-import { APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { AppModule } from "./app.module";
 import { INestApplicationContext } from "@nestjs/common";
 import { CreatePersonUseCase } from "./application/usecases/create-person.usecase";
@@ -12,15 +12,14 @@ async function getAppInstance() {
   return app;
 }
 
-export async function getListPeople(event){
-
+export async function getListPeople() {
   const app = await getAppInstance();
   const getPeopleUseCase = app.get(GetPeopleUseCase);
 
   return await getPeopleUseCase.execute();
 }
 
-export async function createPerson(event) {
+export async function createPerson(event: APIGatewayProxyEvent) {
   const app = await getAppInstance();
 
   const createPersonUseCase = app.get(CreatePersonUseCase);

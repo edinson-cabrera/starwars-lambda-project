@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { AppRepository } from "../app.repository";
-import { dynamoDBClient } from "../../../application/aws-config/dynamo-client";
+import { dynamoDBClient } from "../../lib/aws-config/dynamo-client";
 import { CharacterInterface } from "src/domain/interfaces/character.interface";
 
 const TABLE_NAME = "people";

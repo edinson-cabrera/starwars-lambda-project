@@ -5,13 +5,21 @@ import { AppDynamoRepository } from "src/infrastructure/repositories/impl/app-dy
 export class GetPeopleUseCase {
   constructor(
     @Inject(AppDynamoRepository)
-    private readonly appDynamoRepository: AppDynamoRepository) {}
+    private readonly appDynamoRepository: AppDynamoRepository
+  ) {}
 
   async execute(): Promise<APIGatewayProxyResult> {
-    const response = await this.appDynamoRepository.listPersons();
-    return {
-      statusCode: 200,
-      body: JSON.stringify(response),
-    };
+    try {
+      const response = await this.appDynamoRepository.listPersons();
+      return {
+        statusCode: 200,
+        body: JSON.stringify(response),
+      };
+    } catch (e) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify(e),
+      };
+    }
   }
 }
